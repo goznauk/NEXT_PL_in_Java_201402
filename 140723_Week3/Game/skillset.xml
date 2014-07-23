@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="level1">Power Slash!</entry>
-    <entry key="level2">Heal</entry>
-    <entry key="level3">Magic Shield</entry>
+    <entry key="Effect0">IMPOSSIBLE</entry>
+    <entry key="Effect1">!Pow!</entry>
+    <entry key="Effect2">!Bang!</entry>
+    <entry key="Effect3">!BOOMBOOM!</entry>
 </properties>
