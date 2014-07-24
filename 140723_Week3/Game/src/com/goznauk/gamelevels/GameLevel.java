@@ -31,7 +31,17 @@ public abstract class GameLevel {
         }
     }
 
-    public abstract void play();
+    public final void play() {
+        System.out.print("[level" + level + "] Simple Attack : ");
+        simpleAttack();
+        System.out.println();
+        System.out.print("[level" + level + "]  Turn  Attack : ");
+        turnAttack();
+        System.out.println();
+        System.out.print("[level" + level + "] Flying Attack : ");
+        flyingAttack();
+        System.out.println();
+    }
 
     public String getEffect(KEY key) {
         return effect.get(key.ordinal());

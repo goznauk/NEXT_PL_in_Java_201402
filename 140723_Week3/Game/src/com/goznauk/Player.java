@@ -2,8 +2,12 @@ package com.goznauk;
 
 import com.goznauk.gamelevels.Lv1GameLevel;
 import com.goznauk.gamelevels.GameLevel;
+import com.goznauk.gamelevels.Lv2GameLevel;
+import com.goznauk.gamelevels.Lv3GameLevel;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -12,11 +16,17 @@ import java.lang.reflect.Method;
 public class Player {
     private int level;
     private GameLevel gameLevel;
+    private List<GameLevel> levels = new ArrayList<GameLevel>();
 
     public Player() {
         // The Character Should be level 1 at first
         level = 1;
-        gameLevel = Lv1GameLevel.getInstance();
+        levels.add(Lv1GameLevel.getInstance());
+        levels.add(Lv2GameLevel.getInstance());
+        levels.add(Lv3GameLevel.getInstance());
+
+
+        gameLevel = levels.get(0);
     }
 
     public void upgradeLevel() {
@@ -27,17 +37,7 @@ public class Player {
         }
 
         level++;
-
-        String className = gameLevel.getClass().getPackage().toString() + "." + "Lv" + level + "GameLevel";
-        className = className.replaceFirst("package ", "");
-
-        try {
-            Class c = Class.forName(className);
-            Method method = c.getMethod("getInstance", new Class[0]);
-            gameLevel = (GameLevel)method.invoke(c, new Object[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        gameLevel = levels.get(level-1);
     }
 
     public void attack() {

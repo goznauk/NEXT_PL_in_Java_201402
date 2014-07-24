@@ -15,28 +15,15 @@ public class Lv3GameLevel extends GameLevel {
     }
 
     @Override
-    public void play() {
-        System.out.print("[level" + level + "] Simple Attack : ");
-        simpleAttack();
-        simpleAttack();
-        simpleAttack();
-        System.out.println();
-        System.out.print("[level" + level + "] Turn   Attack : ");
-        turnAttack();
-        turnAttack();
-        System.out.println();
-        System.out.print("[level" + level + "] Flying Attack : ");
-        flyingAttack();
-        System.out.println();
-    }
-
-    @Override
     protected void simpleAttack() {
+        System.out.print(getEffect(KEY.SIMPLE));
+        System.out.print(getEffect(KEY.SIMPLE));
         System.out.print(getEffect(KEY.SIMPLE));
     }
 
     @Override
     protected void turnAttack() {
+        System.out.print(getEffect(KEY.TURN));
         System.out.print(getEffect(KEY.TURN));
     }
 

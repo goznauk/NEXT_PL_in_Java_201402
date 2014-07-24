@@ -14,23 +14,9 @@ public class Lv2GameLevel extends GameLevel {
         return instance;
     }
 
-
-    @Override
-    public void play() {
-        System.out.print("[level" + level + "] Simple Attack : ");
-        simpleAttack();
-        simpleAttack();
-        System.out.println();
-        System.out.print("[level" + level + "] Turn   Attack : ");
-        turnAttack();
-        System.out.println();
-        System.out.print("[level" + level + "] Flying Attack : ");
-        flyingAttack();
-        System.out.println();
-    }
-
     @Override
     protected void simpleAttack() {
+        System.out.print(getEffect(KEY.SIMPLE));
         System.out.print(getEffect(KEY.SIMPLE));
     }
 
