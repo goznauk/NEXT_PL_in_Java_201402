@@ -1,15 +1,26 @@
 package goznauk.pl_in_java.mid_term.model;
 
+import goznauk.pl_in_java.mid_term.controller.ModelChangedCallbackEvent;
 import goznauk.pl_in_java.mid_term.model.blocks.BLOCKTYPE;
 import goznauk.pl_in_java.mid_term.model.blocks.Block;
+
+import java.util.Observable;
 
 /**
  * Created by goznauk on 2014. 8. 3..
  */
-public class Map implements IMap {
+public class Map implements IModel {
     private int width, height;
     private Block[][] blocks;
     private Coordinate cursor;
+
+    private ModelChangedCallbackEvent modelChangedCallbackEvent;
+
+
+
+    public void setModelChangedCallbackEvent(ModelChangedCallbackEvent event) {
+        modelChangedCallbackEvent = event;
+    }
 
     public Map() {
         MapInitializer initializer = new MapInitializer("map.csv");
@@ -40,7 +51,12 @@ public class Map implements IMap {
         blocks[cursor.getY()][cursor.getX()].setType(BLOCKTYPE.CURSOR);
 
         System.out.println("now the cursor is on " + cursor.getX() + "," + cursor.getY() + blocks[cursor.getY()][cursor.getX()].getType());
+
+        modelChangedCallbackEvent.onModelChanged();
+
     }
+
+
 
     public int getMapWidth() { return width; }
     public int getMapHeight() { return height; }

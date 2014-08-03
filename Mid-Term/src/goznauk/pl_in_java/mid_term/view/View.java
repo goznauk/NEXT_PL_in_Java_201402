@@ -1,7 +1,7 @@
 package goznauk.pl_in_java.mid_term.view;
 
 import goznauk.pl_in_java.mid_term.model.blocks.Block;
-import goznauk.pl_in_java.mid_term.model.IMap;
+import goznauk.pl_in_java.mid_term.model.IModel;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -9,15 +9,15 @@ import goznauk.pl_in_java.mid_term.model.IMap;
 public class View implements IView {
 
     @Override
-    public void init(IMap model) {
+    public void init(IModel model) {
 
     }
 
-    public void onModelUpdated(IMap model) {
+    public void onModelUpdated(IModel model) {
         updateView(model);
     }
 
-    public void updateView(IMap model) {
+    public void updateView(IModel model) {
         clearConsole();
 
         System.out.print("| ");

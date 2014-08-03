@@ -1,15 +1,17 @@
 package goznauk.pl_in_java.mid_term.view;
 
-import goznauk.pl_in_java.mid_term.model.IMap;
+import goznauk.pl_in_java.mid_term.model.IModel;
 import goznauk.pl_in_java.mid_term.model.blocks.Block;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by goznauk on 2014. 8. 3..
  */
-public class GridView implements IView {
+public class GridView implements IView, Observer {
     JFrame jFrame = new JFrame("이번엔 GridLayout이다!!");
     JButton [] btn = null;
     Container container;
@@ -18,7 +20,7 @@ public class GridView implements IView {
 
     }
 
-    public void init(IMap model) {
+    public void init(IModel model) {
         jFrame.setLayout(new GridLayout(model.getMapHeight(), model.getMapWidth()));
         container = jFrame.getContentPane();
         btn = new JButton[model.getMapHeight()*model.getMapWidth()];
@@ -41,7 +43,7 @@ public class GridView implements IView {
     }
 
     @Override
-    public void onModelUpdated(IMap model) {
+    public void onModelUpdated(IModel model) {
 
         //TODO ReFactor
         container.removeAll();
@@ -65,5 +67,11 @@ public class GridView implements IView {
             case WALL: return "#";
             default: return "0";
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("update called : object arg is" + arg.getClass() + "o : " + o.getClass());
+        onModelUpdated((IModel) o);
     }
 }
