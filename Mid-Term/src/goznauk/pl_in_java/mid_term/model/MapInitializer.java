@@ -1,5 +1,8 @@
 package goznauk.pl_in_java.mid_term.model;
 
+import goznauk.pl_in_java.mid_term.model.blocks.BLOCKTYPE;
+import goznauk.pl_in_java.mid_term.model.blocks.Block;
+
 import java.io.*;
 
 /**
@@ -36,14 +39,14 @@ public class MapInitializer {
                 // -1 is for Read Blank after last ','
                 String[] token = line.split(",", -1);
                 for(int i = 0; i < token.length; i++) {
-                    blocks[height][i] = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])));
+                    blocks[height][i] = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])), new Coordinate(i, height));
                 }
                 height++;
             }
             br.close();
 
-            blocks[0][0] = new Block(BLOCKTYPE.CURSOR);
-            blocks[height-1][width-1] = new Block(BLOCKTYPE.GOAL);
+            blocks[0][0] = new Block(BLOCKTYPE.CURSOR, new Coordinate(0,0));
+            blocks[height-1][width-1] = new Block(BLOCKTYPE.GOAL, new Coordinate(width-1, height-1));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
