@@ -13,8 +13,9 @@ import java.util.Observer;
  */
 public class GridView implements IView, Observer {
     JFrame jFrame = new JFrame("이번엔 GridLayout이다!!");
-    JButton [] btn = null;
+    JLabel[] labels = null;
     Container container;
+    IModel cashe;
 
     public GridView() {
 
@@ -23,20 +24,28 @@ public class GridView implements IView, Observer {
     public void init(IModel model) {
         jFrame.setLayout(new GridLayout(model.getMapHeight(), model.getMapWidth()));
         container = jFrame.getContentPane();
-        btn = new JButton[model.getMapHeight()*model.getMapWidth()];
+        labels = new JLabel[model.getMapHeight()*model.getMapWidth()];
+
+
 
         for(int y = 0; y < model.getMapHeight(); y++) {
             for(int x = 0; x < model.getMapWidth(); x++) {
-                btn[y * model.getMapHeight() + x] = new JButton(getBlockIcon(model.getBlock(x, y)));
-                container.add(btn[y * model.getMapHeight() + x]);
+                labels[y * model.getMapHeight() + x] = new JLabel(getBlockIcon(model.getBlock(x, y)), JLabel.CENTER);
+                labels[y * model.getMapHeight() + x].setBorder(BorderFactory.createEmptyBorder());
+                container.add(labels[y * model.getMapHeight() + x]);
             }
         }
 
         //프레임 크기 지정하기
         jFrame.setSize(200,200);
 
+
+       // onModelUpdated(model);
+
         //프레임 보이기
         jFrame.setVisible(true);
+
+
 
         //종료버튼에 대한 설정
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,19 +54,14 @@ public class GridView implements IView, Observer {
     @Override
     public void onModelUpdated(IModel model) {
 
-        //TODO ReFactor
-        container.removeAll();
-
         for(int y = 0; y < model.getMapHeight(); y++) {
             for(int x = 0; x < model.getMapWidth(); x++) {
-                //btn[y * model.getMapHeight() + x] = new JButton(x+","+y+getBlockIcon(model.getBlock(x, y)));
-                btn[y * model.getMapHeight() + x] = new JButton(getBlockIcon(model.getBlock(x, y)));
-                container.add(btn[y * model.getMapHeight() + x]);
+                labels[y * model.getMapHeight() + x].setText(getBlockIcon(model.getBlock(x, y)));
             }
         }
+
+        container.validate();
         jFrame.setVisible(true);
-
-
     }
 
     private String getBlockIcon(Block block) {

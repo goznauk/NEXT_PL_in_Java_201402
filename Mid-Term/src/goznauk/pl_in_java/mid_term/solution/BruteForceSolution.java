@@ -19,7 +19,7 @@ public class BruteForceSolution implements ISolution {
         while(!model.isSolved()) {
             if(model.tryMoveCursor(getRandomDirection())) {
                 try {
-                    Thread.sleep(50l);
+                    Thread.sleep(100);
                 } catch (Exception e) {
                 }
             }
