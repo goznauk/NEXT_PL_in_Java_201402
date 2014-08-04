@@ -12,14 +12,27 @@ import java.util.Observable;
 public class Map implements IModel {
     private int width, height;
     private Block[][] blocks;
-    private Coordinate cursor;
+    private Coordinate cursor, goal;
+    private int wallNum;
 
     private ModelChangedCallbackEvent modelChangedCallbackEvent;
 
 
 
     public void setModelChangedCallbackEvent(ModelChangedCallbackEvent event) {
+        if(!checkValidate()) {
+            System.out.println("Error : Map is not validate");
+            return;
+        }
         modelChangedCallbackEvent = event;
+    }
+
+    @Override
+    public boolean isSolved() {
+        if(cursor.getX() == goal.getX() && cursor.getY() == goal.getY()) {
+            return true;
+        }
+        return false;
     }
 
     public Map() {
@@ -27,18 +40,32 @@ public class Map implements IModel {
         blocks = initializer.getBlocks();
         width = initializer.getWidth();
         height = initializer.getHeight();
-
+        wallNum = initializer.getWallNum();
         cursor = new Coordinate(0,0);
+        goal = initializer.getGoal();
     }
 
     public Block getBlock(int x, int y) {
         return blocks[y][x];
     }
 
+    private boolean isInMap(Coordinate c) {
+        int x = c.getX();
+        int y = c.getY();
+
+        if(x<0 || x>=height) { return false; }
+        if(y<0 || y>=height) { return false; }
+        return true;
+    }
+
     @Override
     public boolean canMoveCursor(DIRECTION d) {
         Coordinate destination = cursor.addDirection(d);
-        if(blocks[destination.getY()][destination.getX()].getType().equals(BLOCKTYPE.PATH)) {
+        if(!isInMap(destination)) { return false; }
+
+        BLOCKTYPE type = blocks[destination.getY()][destination.getX()].getType();
+
+        if(type.equals(BLOCKTYPE.PATH) || type.equals(BLOCKTYPE.GOAL)) {
             return true;
         }
         return false;
@@ -56,13 +83,37 @@ public class Map implements IModel {
 
     }
 
+    @Override
+    public boolean tryMoveCursor(DIRECTION d) {
+        if(canMoveCursor(d)) {
+            moveCursor(d);
+            return true;
+        }
+        System.out.println("Can't move");
+        return false;
+    }
 
 
     public int getMapWidth() { return width; }
     public int getMapHeight() { return height; }
 
     private boolean checkValidate() {
+        int count = 0;
+        int wallCount = 0;
         //TODO check the cursor is only one
-        return true;
+        for(Block[] i : blocks) {
+            for(Block b : i) {
+                if(b.getType() == BLOCKTYPE.END) {
+                  return true;
+                } else if(b.getType() == BLOCKTYPE.CURSOR) {
+                    count++;
+                } else if(b.getType() == BLOCKTYPE.WALL) {
+                    wallCount++;
+                }
+            }
+        }
+
+        if(count == 1 && wallCount == wallNum) { return true; }
+        return false;
     }
 }

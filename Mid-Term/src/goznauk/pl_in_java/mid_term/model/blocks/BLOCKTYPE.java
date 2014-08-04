@@ -4,7 +4,7 @@ package goznauk.pl_in_java.mid_term.model.blocks;
  * Created by goznauk on 2014. 8. 3..
  */
 public enum BLOCKTYPE {
-    PATH, WALL, CURSOR, GOAL;
+    PATH, WALL, CURSOR, GOAL, END;
 
     public static BLOCKTYPE fromInteger(int x) {
         switch(x) {
@@ -16,6 +16,8 @@ public enum BLOCKTYPE {
                 return CURSOR;
             case 3:
                 return GOAL;
+            case 4:
+                return END;
         }
         return null;
     }

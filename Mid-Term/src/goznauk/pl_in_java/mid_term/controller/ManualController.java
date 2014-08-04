@@ -2,6 +2,8 @@ package goznauk.pl_in_java.mid_term.controller;
 
 import goznauk.pl_in_java.mid_term.model.DIRECTION;
 import goznauk.pl_in_java.mid_term.model.IModel;
+import goznauk.pl_in_java.mid_term.solution.BruteForceSolution;
+import goznauk.pl_in_java.mid_term.solution.ISolution;
 import goznauk.pl_in_java.mid_term.view.IView;
 
 /**
@@ -10,6 +12,7 @@ import goznauk.pl_in_java.mid_term.view.IView;
 public class ManualController implements IController {
     protected final IModel map;
     private final IView view;
+    private ISolution solution;
 
     public ManualController(IModel map, final IView view) {
         this.map = map;
@@ -18,8 +21,14 @@ public class ManualController implements IController {
         view.init(map);
         map.setModelChangedCallbackEvent(modelChangedCallbackEvent);
 
-        moveExample();
+
+        solution = new BruteForceSolution(map);
+        solution.solve();
+
+
+       // moveExample();
     }
+
 
     ModelChangedCallbackEvent modelChangedCallbackEvent = new ModelChangedCallbackEvent() {
         @Override

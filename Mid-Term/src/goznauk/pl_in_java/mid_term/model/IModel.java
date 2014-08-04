@@ -18,6 +18,10 @@ public interface IModel {
 
     public abstract void moveCursor(DIRECTION d);
 
+    public abstract boolean tryMoveCursor(DIRECTION d);
+
     public void setModelChangedCallbackEvent(ModelChangedCallbackEvent event);
+
+    public abstract boolean isSolved();
 
 }

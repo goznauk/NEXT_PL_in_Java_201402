@@ -10,7 +10,8 @@ import java.io.*;
  */
 public class MapInitializer {
     private Block[][] blocks;
-    private int width, height;
+    private int width, height, wallNum;
+    private Coordinate goal;
 
     public MapInitializer(String path) {
         try {
@@ -39,7 +40,9 @@ public class MapInitializer {
                 // -1 is for Read Blank after last ','
                 String[] token = line.split(",", -1);
                 for(int i = 0; i < token.length; i++) {
-                    blocks[height][i] = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])), new Coordinate(i, height));
+                    Block b = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])), new Coordinate(i, height));
+                    if(b.getType() == BLOCKTYPE.WALL) { wallNum++; }
+                    blocks[height][i] = b;
                 }
                 height++;
             }
@@ -47,6 +50,7 @@ public class MapInitializer {
 
             blocks[0][0] = new Block(BLOCKTYPE.CURSOR, new Coordinate(0,0));
             blocks[height-1][width-1] = new Block(BLOCKTYPE.GOAL, new Coordinate(width-1, height-1));
+            goal = new Coordinate(width-1, height-1);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -64,5 +68,13 @@ public class MapInitializer {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getWallNum() {
+        return wallNum;
+    }
+
+    public Coordinate getGoal() {
+        return goal;
     }
 }
