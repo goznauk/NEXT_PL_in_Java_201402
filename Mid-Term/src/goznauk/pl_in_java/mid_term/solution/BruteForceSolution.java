@@ -1,7 +1,6 @@
 package goznauk.pl_in_java.mid_term.solution;
 
-import goznauk.pl_in_java.mid_term.controller.IController;
-import goznauk.pl_in_java.mid_term.model.DIRECTION;
+import goznauk.pl_in_java.mid_term.data.DIRECTION;
 import goznauk.pl_in_java.mid_term.model.IModel;
 
 /**

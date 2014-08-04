@@ -1,4 +1,4 @@
-package goznauk.pl_in_java.mid_term.model.blocks;
+package goznauk.pl_in_java.mid_term.data;
 
 /**
  * Created by goznauk on 2014. 8. 3..

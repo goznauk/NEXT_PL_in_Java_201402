@@ -1,7 +1,8 @@
 package goznauk.pl_in_java.mid_term.model;
 
 import goznauk.pl_in_java.mid_term.controller.ModelChangedCallbackEvent;
-import goznauk.pl_in_java.mid_term.model.blocks.Block;
+import goznauk.pl_in_java.mid_term.data.Block;
+import goznauk.pl_in_java.mid_term.data.DIRECTION;
 
 /**
  * Created by goznauk on 2014. 8. 3..

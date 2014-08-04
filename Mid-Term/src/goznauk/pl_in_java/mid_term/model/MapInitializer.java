@@ -1,7 +1,8 @@
 package goznauk.pl_in_java.mid_term.model;
 
-import goznauk.pl_in_java.mid_term.model.blocks.BLOCKTYPE;
-import goznauk.pl_in_java.mid_term.model.blocks.Block;
+import goznauk.pl_in_java.mid_term.data.BLOCKTYPE;
+import goznauk.pl_in_java.mid_term.data.Block;
+import goznauk.pl_in_java.mid_term.data.Coordinate;
 
 import java.io.*;
 
@@ -49,8 +50,8 @@ public class MapInitializer {
             br.close();
 
             blocks[0][0] = new Block(BLOCKTYPE.CURSOR, new Coordinate(0,0));
-            blocks[height-1][width-1] = new Block(BLOCKTYPE.GOAL, new Coordinate(width-1, height-1));
             goal = new Coordinate(width-1, height-1);
+            blocks[height-1][width-1] = new Block(BLOCKTYPE.GOAL, goal);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -1,7 +1,7 @@
 package goznauk.pl_in_java.mid_term.view;
 
 import goznauk.pl_in_java.mid_term.model.IModel;
-import goznauk.pl_in_java.mid_term.model.blocks.Block;
+import goznauk.pl_in_java.mid_term.data.Block;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,33 +11,37 @@ import java.util.Observer;
 /**
  * Created by goznauk on 2014. 8. 3..
  */
-public class GridView implements IView, Observer {
-    JFrame jFrame = new JFrame("이번엔 GridLayout이다!!");
+public class GridView implements IView {
+    JFrame jFrame = new JFrame("Class : " + getClass());
     JLabel[] labels = null;
     Container container;
-    IModel cashe;
+    int width, height;
 
     public GridView() {
 
     }
 
     public void init(IModel model) {
-        jFrame.setLayout(new GridLayout(model.getMapHeight(), model.getMapWidth()));
+        width = model.getMapWidth();
+        height = model.getMapHeight();
+        int id;
+
+        jFrame.setLayout(new GridLayout(height, width));
         container = jFrame.getContentPane();
-        labels = new JLabel[model.getMapHeight()*model.getMapWidth()];
+        labels = new JLabel[height*width];
 
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                id = getComponentId(x, y);
+                labels[id] = new JLabel(getBlockIcon(model.getBlock(x, y)), JLabel.CENTER);
+                labels[id].setBorder(BorderFactory.createEmptyBorder());
 
-
-        for(int y = 0; y < model.getMapHeight(); y++) {
-            for(int x = 0; x < model.getMapWidth(); x++) {
-                labels[y * model.getMapHeight() + x] = new JLabel(getBlockIcon(model.getBlock(x, y)), JLabel.CENTER);
-                labels[y * model.getMapHeight() + x].setBorder(BorderFactory.createEmptyBorder());
-                container.add(labels[y * model.getMapHeight() + x]);
+                container.add(labels[id]);
             }
         }
 
         //프레임 크기 지정하기
-        jFrame.setSize(200,200);
+        jFrame.setSize(25*width, 25*height);
 
 
        // onModelUpdated(model);
@@ -53,13 +57,14 @@ public class GridView implements IView, Observer {
 
     @Override
     public void onModelUpdated(IModel model) {
+        int id;
 
-        for(int y = 0; y < model.getMapHeight(); y++) {
-            for(int x = 0; x < model.getMapWidth(); x++) {
-                labels[y * model.getMapHeight() + x].setText(getBlockIcon(model.getBlock(x, y)));
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                id = getComponentId(x, y);
+                labels[id].setText(getBlockIcon(model.getBlock(x, y)));
             }
         }
-
         container.validate();
         jFrame.setVisible(true);
     }
@@ -73,9 +78,8 @@ public class GridView implements IView, Observer {
         }
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-        System.out.println("update called : object arg is" + arg.getClass() + "o : " + o.getClass());
-        onModelUpdated((IModel) o);
+    private int getComponentId(int x, int y) {
+        return (y*width) + x;
     }
+
 }

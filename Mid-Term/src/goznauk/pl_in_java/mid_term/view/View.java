@@ -1,6 +1,6 @@
 package goznauk.pl_in_java.mid_term.view;
 
-import goznauk.pl_in_java.mid_term.model.blocks.Block;
+import goznauk.pl_in_java.mid_term.data.Block;
 import goznauk.pl_in_java.mid_term.model.IModel;
 
 /**
@@ -10,7 +10,7 @@ public class View implements IView {
 
     @Override
     public void init(IModel model) {
-
+        clearConsole();
     }
 
     public void onModelUpdated(IModel model) {
@@ -54,7 +54,10 @@ public class View implements IView {
         }
     }
 
+
     private void clearConsole() {
+        //Doesn't Work
+        /*
         try {
             String os = System.getProperty("os.name");
 
@@ -65,6 +68,10 @@ public class View implements IView {
             }
         } catch (final Exception e) {
             //  Handle any exceptions.
+        }*/
+        for(int i = 0 ; i < 12; i++) {
+            System.out.println();
         }
+
     }
 }

@@ -1,10 +1,10 @@
 package goznauk.pl_in_java.mid_term.model;
 
 import goznauk.pl_in_java.mid_term.controller.ModelChangedCallbackEvent;
-import goznauk.pl_in_java.mid_term.model.blocks.BLOCKTYPE;
-import goznauk.pl_in_java.mid_term.model.blocks.Block;
-
-import java.util.Observable;
+import goznauk.pl_in_java.mid_term.data.BLOCKTYPE;
+import goznauk.pl_in_java.mid_term.data.Block;
+import goznauk.pl_in_java.mid_term.data.Coordinate;
+import goznauk.pl_in_java.mid_term.data.DIRECTION;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -53,7 +53,7 @@ public class Map implements IModel {
         int x = c.getX();
         int y = c.getY();
 
-        if(x<0 || x>=height) { return false; }
+        if(x<0 || x>=width) { return false; }
         if(y<0 || y>=height) { return false; }
         return true;
     }
@@ -100,7 +100,8 @@ public class Map implements IModel {
     private boolean checkValidate() {
         int count = 0;
         int wallCount = 0;
-        //TODO check the cursor is only one
+
+        //TODO check the cursor is only one & wall number is not changed
         for(Block[] i : blocks) {
             for(Block b : i) {
                 if(b.getType() == BLOCKTYPE.END) {
