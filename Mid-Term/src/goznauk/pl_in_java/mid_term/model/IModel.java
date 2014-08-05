@@ -9,6 +9,8 @@ import goznauk.pl_in_java.mid_term.data.DIRECTION;
  */
 public interface IModel {
 
+    public abstract void init();
+
     public abstract int getMapWidth();
 
     public abstract int getMapHeight();

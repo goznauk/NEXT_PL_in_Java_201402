@@ -8,9 +8,11 @@ import goznauk.pl_in_java.mid_term.model.IModel;
  */
 public class BruteForceSolution implements ISolution {
     private IModel model;
+    private boolean is4Way;
 
-    public BruteForceSolution(IModel model) {
+    public BruteForceSolution(IModel model, boolean is4Way) {
         this.model = model;
+        this.is4Way = is4Way;
     }
 
     @Override
@@ -29,16 +31,20 @@ public class BruteForceSolution implements ISolution {
     private DIRECTION getRandomDirection() {
         int r = (int)(Math.random()*100);
 
-        if(r<30) {
-            return DIRECTION.D;
-        } else if(r<60) {
-            return DIRECTION.R;
-        } else if(r<80) {
-            return DIRECTION.U;
-        } else if(r<100) {
-            return DIRECTION.L;
+        if(is4Way) {
+            if (r < 30) {
+                return DIRECTION.D;
+            } else if (r < 60) {
+                return DIRECTION.R;
+            } else if (r < 80) {
+                return DIRECTION.U;
+            } else if (r < 100) {
+                return DIRECTION.L;
+            }
+        } else {
+            //TODO 8way
+            return DIRECTION.DR;
         }
-
         return null;
     }
 }

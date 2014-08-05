@@ -5,8 +5,6 @@ import goznauk.pl_in_java.mid_term.data.Block;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -52,7 +50,7 @@ public class GridView implements IView {
 
 
         //종료버튼에 대한 설정
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   //     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     @Override

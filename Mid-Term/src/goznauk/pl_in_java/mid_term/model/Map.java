@@ -36,6 +36,11 @@ public class Map implements IModel {
     }
 
     public Map() {
+        init();
+    }
+
+    @Override
+    public void init() {
         MapInitializer initializer = new MapInitializer("map.csv");
         blocks = initializer.getBlocks();
         width = initializer.getWidth();
