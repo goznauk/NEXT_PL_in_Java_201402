@@ -17,6 +17,11 @@ public class View implements IView {
         updateView(model);
     }
 
+    @Override
+    public void setViewClosedEvent(ViewClosedEvent event) {
+
+    }
+
     public void updateView(IModel model) {
         clearConsole();
 

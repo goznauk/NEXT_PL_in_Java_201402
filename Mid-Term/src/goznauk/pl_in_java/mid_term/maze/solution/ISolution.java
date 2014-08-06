@@ -5,4 +5,6 @@ package goznauk.pl_in_java.mid_term.maze.solution;
  */
 public interface ISolution {
     public abstract void solve();
+
+    public abstract void stop();
 }

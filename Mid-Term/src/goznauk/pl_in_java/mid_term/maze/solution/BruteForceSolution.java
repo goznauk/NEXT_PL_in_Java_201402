@@ -9,6 +9,7 @@ import goznauk.pl_in_java.mid_term.maze.model.IModel;
 public class BruteForceSolution implements ISolution {
     private IModel model;
     private boolean is4Way;
+    public Thread thread;
 
     public BruteForceSolution(IModel model, boolean is4Way) {
         this.model = model;
@@ -17,15 +18,37 @@ public class BruteForceSolution implements ISolution {
 
     @Override
     public void solve() {
-        while(!model.isSolved()) {
-            if(model.tryMoveCursor(getRandomDirection())) {
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                while (!Thread.currentThread().isInterrupted()) {
+                    for(;;) {
+                        if (model.tryMoveCursor(getRandomDirection())) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (Exception e) {
+                            }
+                        }
+                        if(model.isSolved()) {
+                            System.out.println("Solved");
+                            return;
+                        }
+                    }
+                }
+                while(Thread.currentThread().isInterrupted()) {
+                    System.out.println("fuck");
                 }
             }
-        }
-        System.out.println("Solved");
+        };
+        thread = new Thread(r);
+        thread.start();
+
+    }
+
+    @Override
+    public void stop() {
+        //thread.interrupt();
+        thread.stop();
     }
 
     private DIRECTION getRandomDirection() {

@@ -122,4 +122,6 @@ public class Map implements IModel {
         if(count == 1 && wallCount == wallNum) { return true; }
         return false;
     }
+
+
 }

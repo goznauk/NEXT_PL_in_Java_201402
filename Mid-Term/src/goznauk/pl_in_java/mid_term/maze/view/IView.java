@@ -8,4 +8,5 @@ import goznauk.pl_in_java.mid_term.maze.model.IModel;
 public interface IView {
     public void init(IModel model);
     public void onModelUpdated(IModel model);
+    public void setViewClosedEvent(ViewClosedEvent event);
 }

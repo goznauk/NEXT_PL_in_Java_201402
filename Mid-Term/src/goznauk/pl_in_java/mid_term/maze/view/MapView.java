@@ -5,6 +5,8 @@ import goznauk.pl_in_java.mid_term.maze.data.Block;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -18,6 +20,13 @@ public class MapView implements IView {
     public MapView() {
 
     }
+
+    private ViewClosedEvent viewClosedEvent;
+
+    public void setViewClosedEvent(ViewClosedEvent event) {
+        viewClosedEvent = event;
+    }
+
 
     public void init(IModel model) {
         width = model.getMapWidth();
@@ -42,17 +51,22 @@ public class MapView implements IView {
         jFrame.setSize(25*width, 25*height);
 
 
-       // onModelUpdated(model);
+
+        jFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                System.out.println("window ss");
+                viewClosedEvent.onViewClosed();
+            }
+        });
 
         //프레임 보이기
         jFrame.setVisible(true);
 
-
-
-        //종료버튼에 대한 설정
-        jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
-   //     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+
 
     @Override
     public void onModelUpdated(IModel model) {

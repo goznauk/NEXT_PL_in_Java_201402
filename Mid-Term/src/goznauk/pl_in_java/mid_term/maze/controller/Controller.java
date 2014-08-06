@@ -7,6 +7,7 @@ import goznauk.pl_in_java.mid_term.maze.solution.FloodFillSolution;
 import goznauk.pl_in_java.mid_term.maze.solution.ISolution;
 import goznauk.pl_in_java.mid_term.maze.view.MapView;
 import goznauk.pl_in_java.mid_term.maze.view.IView;
+import goznauk.pl_in_java.mid_term.maze.view.ViewClosedEvent;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -31,13 +32,21 @@ public class Controller {
         }
     };
 
+    ViewClosedEvent viewClosedEvent = new ViewClosedEvent() {
+        @Override
+        public void onViewClosed() {
+            solution.stop();
+        }
+    };
+
+
     public void init() {
         model.init();
         this.view = new MapView();
 
         view.init(model);
         model.setModelChangedCallbackEvent(modelChangedCallbackEvent);
-
+        view.setViewClosedEvent(viewClosedEvent);
         setSolution(0x21);
     }
 
