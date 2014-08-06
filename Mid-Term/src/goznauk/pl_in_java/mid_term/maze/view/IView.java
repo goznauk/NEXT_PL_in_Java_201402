@@ -1,6 +1,6 @@
-package goznauk.pl_in_java.mid_term.view;
+package goznauk.pl_in_java.mid_term.maze.view;
 
-import goznauk.pl_in_java.mid_term.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.model.IModel;
 
 /**
  * Created by goznauk on 2014. 8. 3..

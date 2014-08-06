@@ -1,7 +1,7 @@
-package goznauk.pl_in_java.mid_term.solution;
+package goznauk.pl_in_java.mid_term.maze.solution;
 
-import goznauk.pl_in_java.mid_term.data.DIRECTION;
-import goznauk.pl_in_java.mid_term.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.data.DIRECTION;
+import goznauk.pl_in_java.mid_term.maze.model.IModel;
 
 /**
  * Created by goznauk on 2014. 8. 4..
@@ -20,7 +20,7 @@ public class BruteForceSolution implements ISolution {
         while(!model.isSolved()) {
             if(model.tryMoveCursor(getRandomDirection())) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                 }
             }

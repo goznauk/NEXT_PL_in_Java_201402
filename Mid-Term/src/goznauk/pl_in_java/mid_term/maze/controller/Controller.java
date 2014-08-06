@@ -1,31 +1,25 @@
-package goznauk.pl_in_java.mid_term.controller;
+package goznauk.pl_in_java.mid_term.maze.controller;
 
-import goznauk.pl_in_java.mid_term.data.DIRECTION;
-import goznauk.pl_in_java.mid_term.model.IModel;
-import goznauk.pl_in_java.mid_term.model.Map;
-import goznauk.pl_in_java.mid_term.solution.BruteForceSolution;
-import goznauk.pl_in_java.mid_term.solution.FloodFillSolution;
-import goznauk.pl_in_java.mid_term.solution.ISolution;
-import goznauk.pl_in_java.mid_term.view.GridView;
-import goznauk.pl_in_java.mid_term.view.IView;
-import goznauk.pl_in_java.mid_term.view.OptionView;
-
-import java.awt.*;
+import goznauk.pl_in_java.mid_term.maze.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.model.Map;
+import goznauk.pl_in_java.mid_term.maze.solution.BruteForceSolution;
+import goznauk.pl_in_java.mid_term.maze.solution.FloodFillSolution;
+import goznauk.pl_in_java.mid_term.maze.solution.ISolution;
+import goznauk.pl_in_java.mid_term.maze.view.MapView;
+import goznauk.pl_in_java.mid_term.maze.view.IView;
 
 /**
  * Created by goznauk on 2014. 8. 3..
  */
 public class Controller {
     protected IModel model;
-    private  IView view;
+    private IView view;
     private ISolution solution;
 
     public Controller() {
         this.model = new Map();
 
 
-     //   OptionView optionView = new OptionView();
-    //    optionView.initialize(this);
         init();
         execute();
     }
@@ -39,7 +33,7 @@ public class Controller {
 
     public void init() {
         model.init();
-        this.view = new GridView();
+        this.view = new MapView();
 
         view.init(model);
         model.setModelChangedCallbackEvent(modelChangedCallbackEvent);
@@ -77,7 +71,7 @@ public class Controller {
         } else if((option & 4) != 0) {
             //solution = new AStarSolution(model);
         } else if((option & 8) != 0) {
-            solution = new FloodFillSolution(model);
+            //solution = new FloodFillSolution(model);
         }
     }
 

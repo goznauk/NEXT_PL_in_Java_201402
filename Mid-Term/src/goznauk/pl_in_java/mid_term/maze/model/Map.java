@@ -1,10 +1,10 @@
-package goznauk.pl_in_java.mid_term.model;
+package goznauk.pl_in_java.mid_term.maze.model;
 
-import goznauk.pl_in_java.mid_term.controller.ModelChangedCallbackEvent;
-import goznauk.pl_in_java.mid_term.data.BLOCKTYPE;
-import goznauk.pl_in_java.mid_term.data.Block;
-import goznauk.pl_in_java.mid_term.data.Coordinate;
-import goznauk.pl_in_java.mid_term.data.DIRECTION;
+import goznauk.pl_in_java.mid_term.maze.controller.ModelChangedCallbackEvent;
+import goznauk.pl_in_java.mid_term.maze.data.BLOCKTYPE;
+import goznauk.pl_in_java.mid_term.maze.data.Block;
+import goznauk.pl_in_java.mid_term.maze.data.Coordinate;
+import goznauk.pl_in_java.mid_term.maze.data.DIRECTION;
 
 /**
  * Created by goznauk on 2014. 8. 3..

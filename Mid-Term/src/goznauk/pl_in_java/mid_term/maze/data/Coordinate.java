@@ -1,4 +1,4 @@
-package goznauk.pl_in_java.mid_term.data;
+package goznauk.pl_in_java.mid_term.maze.data;
 
 /**
  * Created by goznauk on 2014. 8. 3..

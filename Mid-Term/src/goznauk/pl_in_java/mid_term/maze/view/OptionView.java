@@ -1,7 +1,6 @@
-package goznauk.pl_in_java.mid_term.view;
+package goznauk.pl_in_java.mid_term.maze.view;
 
-import goznauk.pl_in_java.mid_term.controller.Controller;
-import goznauk.pl_in_java.mid_term.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;

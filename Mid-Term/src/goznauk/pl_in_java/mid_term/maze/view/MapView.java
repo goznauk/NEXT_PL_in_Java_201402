@@ -1,7 +1,7 @@
-package goznauk.pl_in_java.mid_term.view;
+package goznauk.pl_in_java.mid_term.maze.view;
 
-import goznauk.pl_in_java.mid_term.model.IModel;
-import goznauk.pl_in_java.mid_term.data.Block;
+import goznauk.pl_in_java.mid_term.maze.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.data.Block;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +9,13 @@ import java.awt.*;
 /**
  * Created by goznauk on 2014. 8. 3..
  */
-public class GridView implements IView {
+public class MapView implements IView {
     JFrame jFrame = new JFrame("Class : " + getClass());
     JLabel[] labels = null;
     Container container;
     int width, height;
 
-    public GridView() {
+    public MapView() {
 
     }
 
@@ -50,6 +50,7 @@ public class GridView implements IView {
 
 
         //종료버튼에 대한 설정
+        jFrame.setDefaultCloseOperation(jFrame.EXIT_ON_CLOSE);
    //     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
