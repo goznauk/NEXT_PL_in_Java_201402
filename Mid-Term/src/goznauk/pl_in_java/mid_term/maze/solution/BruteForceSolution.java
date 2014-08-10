@@ -1,54 +1,57 @@
 package goznauk.pl_in_java.mid_term.maze.solution;
 
 import goznauk.pl_in_java.mid_term.maze.data.DIRECTION;
-import goznauk.pl_in_java.mid_term.maze.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.model.Map;
 
 /**
  * Created by goznauk on 2014. 8. 4..
  */
 public class BruteForceSolution implements ISolution {
-    private IModel model;
+    private Map model;
     private boolean is4Way;
     public Thread thread;
+    private boolean stopFlag;
+    private Runnable runnable;
 
-    public BruteForceSolution(IModel model, boolean is4Way) {
+    public BruteForceSolution(Map model, boolean is4Way) {
         this.model = model;
         this.is4Way = is4Way;
     }
 
+
+    @Override
+    public void init() {
+        stopFlag = false;
+    }
+
     @Override
     public void solve() {
-        Runnable r = new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
-                while (!Thread.currentThread().isInterrupted()) {
-                    for(;;) {
-                        if (model.tryMoveCursor(getRandomDirection())) {
-                            try {
-                                Thread.sleep(100);
-                            } catch (Exception e) {
-                            }
-                        }
-                        if(model.isSolved()) {
-                            System.out.println("Solved");
-                            return;
+                while (!stopFlag) {
+                    if (model.tryMoveCursor(getRandomDirection())) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception e) {
                         }
                     }
-                }
-                while(Thread.currentThread().isInterrupted()) {
-                    System.out.println("fuck");
+                    if (model.isSolved()) {
+                        System.out.println("Solved");
+                        return;
+                    }
                 }
             }
         };
-        thread = new Thread(r);
+        thread = new Thread(runnable);
         thread.start();
-
     }
 
     @Override
     public void stop() {
-        //thread.interrupt();
-        thread.stop();
+        System.out.println("solution.stop()");
+        stopFlag = true;
+        thread.interrupt();
     }
 
     private DIRECTION getRandomDirection() {
@@ -65,8 +68,23 @@ public class BruteForceSolution implements ISolution {
                 return DIRECTION.L;
             }
         } else {
-            //TODO 8way
-            return DIRECTION.DR;
+            if(r < 20) {
+                return DIRECTION.DR;
+            } else if(r < 35) {
+                return DIRECTION.D;
+            } else if(r < 50) {
+                return DIRECTION.R;
+            } else if(r < 60) {
+                return DIRECTION.UR;
+            } else if(r < 70) {
+                return DIRECTION.U;
+            } else if(r < 80) {
+                return DIRECTION.UL;
+            } else if(r < 90) {
+                return DIRECTION.L;
+            } else if(r < 100) {
+                return DIRECTION.DL;
+            }
         }
         return null;
     }

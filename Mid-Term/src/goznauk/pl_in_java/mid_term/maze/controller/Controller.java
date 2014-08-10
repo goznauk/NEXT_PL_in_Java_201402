@@ -1,28 +1,65 @@
 package goznauk.pl_in_java.mid_term.maze.controller;
 
-import goznauk.pl_in_java.mid_term.maze.model.IModel;
+import goznauk.pl_in_java.mid_term.maze.data.DIRECTION;
 import goznauk.pl_in_java.mid_term.maze.model.Map;
 import goznauk.pl_in_java.mid_term.maze.solution.BruteForceSolution;
-import goznauk.pl_in_java.mid_term.maze.solution.FloodFillSolution;
 import goznauk.pl_in_java.mid_term.maze.solution.ISolution;
+import goznauk.pl_in_java.mid_term.maze.solution.ManualSolution;
 import goznauk.pl_in_java.mid_term.maze.view.MapView;
-import goznauk.pl_in_java.mid_term.maze.view.IView;
-import goznauk.pl_in_java.mid_term.maze.view.ViewClosedEvent;
+import goznauk.pl_in_java.mid_term.maze.view.ViewCallbackEvent;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by goznauk on 2014. 8. 3..
  */
 public class Controller {
-    protected IModel model;
-    private IView view;
+    private Map model;
+    private MapView view;
     private ISolution solution;
+    private int id;
 
-    public Controller() {
-        this.model = new Map();
+    public Controller(int id, int option, String path) {
+        this.id = id;
 
+        model = new Map(path);
+        view = new MapView("[" + id + "] Option : 0x" + Integer.toHexString(option));
 
-        init();
+        view.init(model);
+        model.setModelChangedCallbackEvent(modelChangedCallbackEvent);
+        view.setViewCallbackEvent(viewCallbackEvent);
+
+        setSolution(option);
         execute();
+    }
+
+    ViewCallbackEvent viewCallbackEvent = new ViewCallbackEvent() {
+        @Override
+        public void onViewClosed() {
+            System.out.println("onViewClosed()");
+            solution.stop();
+        }
+
+        @Override
+        public void onResetButtonClicked() {
+            solution.stop();
+            model.init();
+            view.init(model);
+
+            execute();
+        }
+
+        @Override
+        public void onExitButtonClicked() {
+            System.out.println("onViewClosed()");
+            exit();
+        }
+    };
+
+    public void exit() {
+        solution.stop();
+        view.exit();
     }
 
     ModelChangedCallbackEvent modelChangedCallbackEvent = new ModelChangedCallbackEvent() {
@@ -31,24 +68,6 @@ public class Controller {
             view.onModelUpdated(model);
         }
     };
-
-    ViewClosedEvent viewClosedEvent = new ViewClosedEvent() {
-        @Override
-        public void onViewClosed() {
-            solution.stop();
-        }
-    };
-
-
-    public void init() {
-        model.init();
-        this.view = new MapView();
-
-        view.init(model);
-        model.setModelChangedCallbackEvent(modelChangedCallbackEvent);
-        view.setViewClosedEvent(viewClosedEvent);
-        setSolution(0x21);
-    }
 
 
     /*
@@ -74,7 +93,7 @@ public class Controller {
         option = option >> 4;
 
         if((option & 1) != 0) {
-            //solution = new ManualSolution(model);
+            solution = new ManualSolution(model, view, is4Way);
         } else if((option & 2) != 0) {
             solution = new BruteForceSolution(model, is4Way);
         } else if((option & 4) != 0) {
@@ -85,6 +104,9 @@ public class Controller {
     }
 
     public void execute() {
+        solution.init();
         solution.solve();
     }
+
+    public void stop() { solution.stop(); }
 }

@@ -1,40 +1,62 @@
 package goznauk.pl_in_java.mid_term.maze.view;
 
-import goznauk.pl_in_java.mid_term.maze.model.IModel;
 import goznauk.pl_in_java.mid_term.maze.data.Block;
+import goznauk.pl_in_java.mid_term.maze.model.Map;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Created by goznauk on 2014. 8. 3..
+ * Created by goznauk on 2014. 8. 10..
  */
-public class MapView implements IView {
-    JFrame jFrame = new JFrame("Class : " + getClass());
-    JLabel[] labels = null;
+public class MapView extends JFrame{
     Container container;
+    JLabel[] labels;
     int width, height;
 
-    public MapView() {
+    JLabel movedLabel;
 
+    public MapView(String title) {
+        super(title);
     }
 
-    private ViewClosedEvent viewClosedEvent;
+    private ViewCallbackEvent viewCallbackEvent;
 
-    public void setViewClosedEvent(ViewClosedEvent event) {
-        viewClosedEvent = event;
+    public void setViewCallbackEvent(ViewCallbackEvent event) {
+        viewCallbackEvent = event;
+    }
+
+    public void exit() {
+        dispose();
     }
 
 
-    public void init(IModel model) {
+    public void init(Map model) {
+        if(container != null) {
+            container.removeAll();
+        }
+
+        container = getContentPane();
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+
         width = model.getMapWidth();
         height = model.getMapHeight();
+        setBounds(500, 20, (15 * width) + 150 + 20, 25 * height + 10);
+
+
+        // maze
+        JPanel mazePanel = new JPanel();
+
         int id;
 
-        jFrame.setLayout(new GridLayout(height, width));
-        container = jFrame.getContentPane();
+        mazePanel.setLayout(new GridLayout(height, width));
+        mazePanel.setSize(15*width, 25*height);
+        mazePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
         labels = new JLabel[height*width];
 
         for(int y = 0; y < height; y++) {
@@ -43,33 +65,68 @@ public class MapView implements IView {
                 labels[id] = new JLabel(getBlockIcon(model.getBlock(x, y)), JLabel.CENTER);
                 labels[id].setBorder(BorderFactory.createEmptyBorder());
 
-                container.add(labels[id]);
+                mazePanel.add(labels[id]);
             }
         }
 
-        //프레임 크기 지정하기
-        jFrame.setSize(25*width, 25*height);
+        container.add(mazePanel);
+
+
+        // details
+        JPanel detailPanel = new JPanel();
+        detailPanel.setLayout(new BoxLayout(detailPanel, BoxLayout.Y_AXIS));
+        detailPanel.setSize(150, 25*height);
+        detailPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        movedLabel = new JLabel("moved : " + model.getMoved());
+
+        JLabel blank = new JLabel("");
+        blank.setMaximumSize(new Dimension(detailPanel.getWidth(), Integer.MAX_VALUE));
+
+        JButton restartButton = new JButton("Restart");
+        restartButton.setMaximumSize(new Dimension(detailPanel.getWidth(), 30));
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewCallbackEvent.onResetButtonClicked();
+            }
+        });
+
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.setMaximumSize(new Dimension(detailPanel.getWidth(), 30));
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewCallbackEvent.onExitButtonClicked();
+            }
+        });
+
+
+        detailPanel.add(movedLabel);
+        detailPanel.add(blank);
+        detailPanel.add(restartButton);
+        detailPanel.add(exitButton);
+
+        container.add(detailPanel);
 
 
 
-        jFrame.addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 System.out.println("window ss");
-                viewClosedEvent.onViewClosed();
+                viewCallbackEvent.onViewClosed();
             }
         });
 
-        //프레임 보이기
-        jFrame.setVisible(true);
-
+        setVisible(true);
     }
 
 
 
-    @Override
-    public void onModelUpdated(IModel model) {
+    public void onModelUpdated(Map model) {
         int id;
 
         for(int y = 0; y < height; y++) {
@@ -78,8 +135,8 @@ public class MapView implements IView {
                 labels[id].setText(getBlockIcon(model.getBlock(x, y)));
             }
         }
-        container.validate();
-        jFrame.setVisible(true);
+
+        movedLabel.setText("moved : " + model.getMoved());
     }
 
     private String getBlockIcon(Block block) {
