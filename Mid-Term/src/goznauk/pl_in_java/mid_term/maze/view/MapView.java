@@ -24,10 +24,10 @@ public class MapView extends JFrame{
         super(title);
     }
 
-    private ViewCallbackEvent viewCallbackEvent;
+    private MapViewCallbackEvent mapViewCallbackEvent;
 
-    public void setViewCallbackEvent(ViewCallbackEvent event) {
-        viewCallbackEvent = event;
+    public void setMapViewCallbackEvent(MapViewCallbackEvent event) {
+        mapViewCallbackEvent = event;
     }
 
     public void exit() {
@@ -36,17 +36,19 @@ public class MapView extends JFrame{
 
 
     public void init(Map model) {
+        boolean isInitial = true;
+
         if(container != null) {
+            isInitial = false;
             container.removeAll();
+        } else {
+            container = getContentPane();
+            container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+
+            width = model.getMapWidth();
+            height = model.getMapHeight();
+            setBounds(500, 20, (15 * width) + 150 + 20, 25 * height + 10);
         }
-
-        container = getContentPane();
-        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-
-        width = model.getMapWidth();
-        height = model.getMapHeight();
-        setBounds(500, 20, (15 * width) + 150 + 20, 25 * height + 10);
-
 
         // maze
         JPanel mazePanel = new JPanel();
@@ -88,7 +90,7 @@ public class MapView extends JFrame{
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewCallbackEvent.onResetButtonClicked();
+                mapViewCallbackEvent.onResetButtonClicked();
             }
         });
 
@@ -98,7 +100,7 @@ public class MapView extends JFrame{
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewCallbackEvent.onExitButtonClicked();
+                mapViewCallbackEvent.onExitButtonClicked();
             }
         });
 
@@ -117,11 +119,13 @@ public class MapView extends JFrame{
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 System.out.println("window ss");
-                viewCallbackEvent.onViewClosed();
+                mapViewCallbackEvent.onViewClosed();
             }
         });
 
-        setVisible(true);
+        if(isInitial) {
+            setVisible(true);
+        }
     }
 
 

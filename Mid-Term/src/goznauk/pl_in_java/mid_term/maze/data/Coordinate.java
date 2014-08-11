@@ -19,9 +19,17 @@ public class Coordinate {
         return y;
     }
 
+    public Coordinate clone() {
+        return new Coordinate(x, y);
+    }
+
     public Coordinate getAnonymusCoordinate(int x, int y, int xx, int yy) {
         Coordinate tmp = new Coordinate(x + xx, y + yy);
         return tmp;
+    }
+
+    public boolean isSame(Coordinate coordinate) {
+        return (this.x == coordinate.getX()) && this.y == coordinate.getY();
     }
 
     public Coordinate addDirection(DIRECTION dir) {

@@ -11,6 +11,9 @@ public enum DIRECTION {
         this.value = value;
     }
 
+    public void setValue() {
+
+    }
     public int getValue() {
         return value;
     }

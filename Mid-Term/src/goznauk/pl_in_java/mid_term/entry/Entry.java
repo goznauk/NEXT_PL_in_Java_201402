@@ -1,7 +1,8 @@
 package goznauk.pl_in_java.mid_term.entry;
 
+import goznauk.pl_in_java.mid_term.entry.mapmaker.MapMaker;
+import goznauk.pl_in_java.mid_term.entry.mapmaker.MapMakerCallbackEvent;
 import goznauk.pl_in_java.mid_term.maze.Maze;
-import goznauk.pl_in_java.mid_term.maze.controller.Controller;
 
 /**
  * Created by goznauk on 2014. 8. 8..
@@ -10,14 +11,15 @@ public class Entry {
     private EntryView entryView;
     private int option;
     private String mapPath;
-    private Controller controller;
     private Maze maze;
+    private MapMaker maker;
 
     public Entry() {
         entryView = new EntryView();
         maze = new Maze();
+        maker = new MapMaker();
 
-        ViewCallbackEvent viewCallbackEvent = new ViewCallbackEvent() {
+        EntryViewCallbackEvent entryViewCallbackEvent = new EntryViewCallbackEvent() {
             @Override
             public void onOptionChanged() {
                 option = entryView.getOption();
@@ -26,6 +28,11 @@ public class Entry {
             @Override
             public void onMapPathChanged() {
                 mapPath = entryView.getMapPath();
+            }
+
+            @Override
+            public void onMapMakeButtonClicked() {
+                maker.init(mapPath);
             }
 
             @Override
@@ -39,6 +46,18 @@ public class Entry {
                 System.exit(0);
             }
         };
-        entryView.setViewCallbackEvent(viewCallbackEvent);
+
+        entryView.setEntryViewCallbackEvent(entryViewCallbackEvent);
+
+
+        MapMakerCallbackEvent mapMakerCallbackEvent = new MapMakerCallbackEvent() {
+            @Override
+            public void onMapSaved() {
+                mapPath = maker.getPath();
+                entryView.setMapPath(mapPath);
+            }
+        };
+
+        maker.setMapMakerCallbackEvent(mapMakerCallbackEvent);
     }
 }

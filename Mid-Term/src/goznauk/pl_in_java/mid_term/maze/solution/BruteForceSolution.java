@@ -7,11 +7,15 @@ import goznauk.pl_in_java.mid_term.maze.model.Map;
  * Created by goznauk on 2014. 8. 4..
  */
 public class BruteForceSolution implements ISolution {
+    static final int COUTN_MAX = 10000;
+
     private Map model;
     private boolean is4Way;
     public Thread thread;
     private boolean stopFlag;
     private Runnable runnable;
+
+    int count = 0;
 
     public BruteForceSolution(Map model, boolean is4Way) {
         this.model = model;
@@ -26,19 +30,25 @@ public class BruteForceSolution implements ISolution {
 
     @Override
     public void solve() {
+
         runnable = new Runnable() {
             @Override
             public void run() {
                 while (!stopFlag) {
                     if (model.tryMoveCursor(getRandomDirection())) {
                         try {
-                            Thread.sleep(100);
+                            count++;
+                            Thread.sleep(10);
                         } catch (Exception e) {
                         }
                     }
                     if (model.isSolved()) {
                         System.out.println("Solved");
                         return;
+                    }
+                    if (count > COUTN_MAX) {
+                        System.out.println("Cannot solve");
+                        stop();
                     }
                 }
             }

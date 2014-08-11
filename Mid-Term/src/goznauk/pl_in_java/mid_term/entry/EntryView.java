@@ -1,12 +1,16 @@
 package goznauk.pl_in_java.mid_term.entry;
 
 
+import goznauk.pl_in_java.mid_term.entry.mapmaker.MapMaker;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -28,10 +32,12 @@ public class EntryView extends JFrame {
     private String mapPath;
 
 
-    private ViewCallbackEvent viewCallbackEvent;
+    private JLabel mapPathLabel;
 
-    public void setViewCallbackEvent(ViewCallbackEvent event) {
-        viewCallbackEvent = event;
+    private EntryViewCallbackEvent entryViewCallbackEvent;
+
+    public void setEntryViewCallbackEvent(EntryViewCallbackEvent event) {
+        entryViewCallbackEvent = event;
     }
 
 
@@ -58,7 +64,7 @@ public class EntryView extends JFrame {
         mapPanel.setBorder(BorderFactory.createTitledBorder("MAP"));
 
         mapPath = "map.csv";
-        JLabel mapPathLabel = new JLabel("   " + mapPath);
+        mapPathLabel = new JLabel("   " + mapPath);
 
         JPanel mapButtonPanel = new JPanel();
         mapButtonPanel.setLayout(new GridLayout(1,0));
@@ -69,14 +75,16 @@ public class EntryView extends JFrame {
         selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("select clicked");
+                selectMapPath();
+                setMapPath(mapPath);
+                entryViewCallbackEvent.onMapPathChanged();
             }
         });
 
         makeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("make clicked");
+                entryViewCallbackEvent.onMapMakeButtonClicked();
             }
         });
 
@@ -198,23 +206,19 @@ public class EntryView extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //start controller with option
-                System.out.println("Start button clicked");
-
                 // refactor later
-                viewCallbackEvent.onOptionChanged();
-                viewCallbackEvent.onMapPathChanged();
+                entryViewCallbackEvent.onOptionChanged();
+                entryViewCallbackEvent.onMapPathChanged();
 
 
-
-                viewCallbackEvent.onStartButtonClicked();
+                entryViewCallbackEvent.onStartButtonClicked();
             }
         });
 
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                viewCallbackEvent.onExitButtonClicked();
+                entryViewCallbackEvent.onExitButtonClicked();
                 dispose();
             }
         });
@@ -233,16 +237,30 @@ public class EntryView extends JFrame {
         setVisible(true);
     }
 
+    private void selectMapPath() {
+        JFileChooser fileChooser = new JFileChooser(mapPath);
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("csv file", "csv");
+        fileChooser.setFileFilter(filter);
+
+        int result = fileChooser.showOpenDialog(this);
+        System.out.println(result);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            mapPath = selectedFile.toString();
+            System.out.println(mapPath);
+        }
+    }
+
     private void setDirNum(int dirNum) {
         option = (option/16) * 16;
         option += dirNum;
-        System.out.println("option now" + option);
     }
 
     private void setMode(int mode) {
         option = option % 16;
         option += mode;
-        System.out.println("option now" + option);
     }
 
     public int getOption() {
@@ -251,6 +269,33 @@ public class EntryView extends JFrame {
 
     public String getMapPath() {
         return mapPath;
+    }
+
+    public void setMapPath(String path) {
+        mapPath = path;
+        mapPathLabel.setText("   " + shortenPath(mapPath));
+    }
+
+    private String shortenPath(String path) {
+        if(path.length() > 20) {
+            return "/..." + shorten(path);
+        }
+        return path;
+    }
+
+    private String shorten(String path) {
+        String s = path;
+
+        if(System.getProperty("os.name").toLowerCase().indexOf("mac")>=0) {
+            if (s.length() > 20) {
+                s = s.substring(1);
+                if(s.indexOf("/") != -1) {
+                    s = s.substring(s.indexOf("/"));
+                    s = shorten(s);
+                }
+            }
+        }
+        return s;
     }
 
 }

@@ -1,15 +1,12 @@
 package goznauk.pl_in_java.mid_term.maze.controller;
 
-import goznauk.pl_in_java.mid_term.maze.data.DIRECTION;
 import goznauk.pl_in_java.mid_term.maze.model.Map;
-import goznauk.pl_in_java.mid_term.maze.solution.BruteForceSolution;
-import goznauk.pl_in_java.mid_term.maze.solution.ISolution;
-import goznauk.pl_in_java.mid_term.maze.solution.ManualSolution;
+import goznauk.pl_in_java.mid_term.maze.model.ModelChangedCallbackEvent;
+import goznauk.pl_in_java.mid_term.maze.solution.*;
 import goznauk.pl_in_java.mid_term.maze.view.MapView;
-import goznauk.pl_in_java.mid_term.maze.view.ViewCallbackEvent;
+import goznauk.pl_in_java.mid_term.maze.view.MapViewCallbackEvent;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 /**
  * Created by goznauk on 2014. 8. 3..
@@ -20,21 +17,27 @@ public class Controller {
     private ISolution solution;
     private int id;
 
+    private final String ERROR_LOAD = "Error Loading File\nPlease select a valid map file";
+
     public Controller(int id, int option, String path) {
         this.id = id;
 
         model = new Map(path);
+        if(!model.isLoadedSuccess()) {
+            JOptionPane.showMessageDialog(new JFrame(".."), ERROR_LOAD);
+            exit();
+        }
         view = new MapView("[" + id + "] Option : 0x" + Integer.toHexString(option));
 
         view.init(model);
         model.setModelChangedCallbackEvent(modelChangedCallbackEvent);
-        view.setViewCallbackEvent(viewCallbackEvent);
+        view.setMapViewCallbackEvent(mapViewCallbackEvent);
 
         setSolution(option);
         execute();
     }
 
-    ViewCallbackEvent viewCallbackEvent = new ViewCallbackEvent() {
+    MapViewCallbackEvent mapViewCallbackEvent = new MapViewCallbackEvent() {
         @Override
         public void onViewClosed() {
             System.out.println("onViewClosed()");
@@ -80,7 +83,6 @@ public class Controller {
      * 1000 : Flood Fill
      */
     public void setSolution(int option) {
-        // TODO set Solution
 
         boolean is4Way = true;
 
@@ -92,14 +94,19 @@ public class Controller {
 
         option = option >> 4;
 
-        if((option & 1) != 0) {
-            solution = new ManualSolution(model, view, is4Way);
-        } else if((option & 2) != 0) {
-            solution = new BruteForceSolution(model, is4Way);
-        } else if((option & 4) != 0) {
-            //solution = new AStarSolution(model);
-        } else if((option & 8) != 0) {
-            //solution = new FloodFillSolution(model);
+        switch (option) {
+            case 1:
+                solution = new ManualSolution(model, view, is4Way);
+                break;
+            case 2:
+                solution = new BruteForceSolution(model, is4Way);
+                break;
+            case 3:
+                solution = new AStarSolution(model, is4Way);
+                break;
+            case 4:
+                solution = new FloodFillSolution(model, view, is4Way);
+                break;
         }
     }
 
@@ -107,6 +114,4 @@ public class Controller {
         solution.init();
         solution.solve();
     }
-
-    public void stop() { solution.stop(); }
 }
