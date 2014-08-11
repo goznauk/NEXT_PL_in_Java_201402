@@ -36,45 +36,49 @@ public class Map {
     }
 
     public void init() {
-
-
         if(isLoading) { return; }
         isLoading = true;
-        try {
-            File csv = new File(path);
-            BufferedReader br = new BufferedReader(new FileReader(csv));
-            String line = "";
 
-            width = 0;
-            height = 0;
 
-            while ((line = br.readLine()) != null) {
+        if(path.equals("Please Select the Map Path")) {
+            width = 10;
+            height = 8;
+
+            String[] lines =
+                    {"0,1,1,1,0,1,1,1,1,0",
+                            "0,0,0,1,0,0,0,0,0,0",
+                            "1,1,0,0,0,1,0,1,1,1",
+                            "1,1,0,1,0,1,0,1,0,1",
+                            "1,0,0,1,0,0,0,0,0,0",
+                            "0,1,1,1,0,1,1,1,1,0",
+                            "1,0,1,1,0,0,0,0,1,1",
+                            "0,1,1,0,1,1,1,0,0,0"};
+            for(int i = 0; i < lines.length; i++) {
                 // -1 is for Read Blank after last ','
-                String[] token = line.split(",", -1);
+                String[] token = lines[i].split(",", -1);
 
                 //TODO test and plus or minus 1
                 width = token.length;
                 height++;
             }
+
             blocks = new Block[height][width];
 
             height = 0;
 
             try {
-                br = new BufferedReader(new FileReader(csv));
-                while ((line = br.readLine()) != null) {
+                for(int i = 0; i < lines.length; i++) {
                     // -1 is for Read Blank after last ','
-                    String[] token = line.split(",", -1);
-                    for (int i = 0; i < token.length; i++) {
-                        Block b = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])), new Coordinate(i, height));
+                    String[] token = lines[i].split(",", -1);
+                    for (int j = 0; j < token.length; j++) {
+                        Block b = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[j])), new Coordinate(j, height));
                         if (b.getType() == BLOCKTYPE.WALL) {
                             wallNum++;
                         }
-                        blocks[height][i] = b;
+                        blocks[height][j] = b;
                     }
                     height++;
                 }
-                br.close();
 
                 cursor = new Coordinate(0,0);
                 blocks[0][0] = new Block(BLOCKTYPE.CURSOR, cursor);
@@ -87,10 +91,59 @@ public class Map {
                 e.printStackTrace();
                 System.out.println("loaded success " + loadedSuccess);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            try {
+                File csv = new File(path);
+                BufferedReader br = new BufferedReader(new FileReader(csv));
+                String line = "";
+
+                width = 0;
+                height = 0;
+
+                while ((line = br.readLine()) != null) {
+                    // -1 is for Read Blank after last ','
+                    String[] token = line.split(",", -1);
+
+                    //TODO test and plus or minus 1
+                    width = token.length;
+                    height++;
+                }
+                blocks = new Block[height][width];
+
+                height = 0;
+
+                try {
+                    br = new BufferedReader(new FileReader(csv));
+                    while ((line = br.readLine()) != null) {
+                        // -1 is for Read Blank after last ','
+                        String[] token = line.split(",", -1);
+                        for (int i = 0; i < token.length; i++) {
+                            Block b = new Block(BLOCKTYPE.fromInteger(Integer.parseInt(token[i])), new Coordinate(i, height));
+                            if (b.getType() == BLOCKTYPE.WALL) {
+                                wallNum++;
+                            }
+                            blocks[height][i] = b;
+                        }
+                        height++;
+                    }
+                    br.close();
+
+                    cursor = new Coordinate(0, 0);
+                    blocks[0][0] = new Block(BLOCKTYPE.CURSOR, cursor);
+                    goal = new Coordinate(width - 1, height - 1);
+                    blocks[height - 1][width - 1] = new Block(BLOCKTYPE.GOAL, goal);
+
+                    moved = 0;
+                } catch (Exception e) {
+                    loadedSuccess = false;
+                    e.printStackTrace();
+                    System.out.println("loaded success " + loadedSuccess);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         isLoading = false;
     }

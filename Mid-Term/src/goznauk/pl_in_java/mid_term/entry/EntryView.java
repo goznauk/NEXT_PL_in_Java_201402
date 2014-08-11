@@ -63,7 +63,7 @@ public class EntryView extends JFrame {
         mapPanel.setLayout(new GridLayout(1, 0));
         mapPanel.setBorder(BorderFactory.createTitledBorder("MAP"));
 
-        mapPath = "map.csv";
+        mapPath = "Please Select the Map Path";
         mapPathLabel = new JLabel("   " + mapPath);
 
         JPanel mapButtonPanel = new JPanel();
