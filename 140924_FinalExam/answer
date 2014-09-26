@@ -1,0 +1,464 @@
+1. 
+
+public class Car {
+
+	String name;
+	
+	public Car(){}
+	public Car(String name){
+		this.name = name;
+	}
+}
+
+public class CarFactory { 	
+	private static CarFactory instance = new CarFactory();
+
+	private CarFactory() {}
+
+	public static CarFactory getInstance() {
+		return instance;
+	}
+
+	public Car createCar(String name) {
+		return new Car(name);
+	}
+}
+
+public class CarTest {
+	
+	public void testCarFactory(){
+		CarFactory factory1 = CarFactory.getInstance();
+		Car c1 = factory1.createCar("지윤Sonata");
+		CarFactory factory2 = CarFactory.getInstance();
+		Car c2 = factory2.createCar("영대Equss");
+		CarFactory factory3 = new CarFactory(); //컴파일 오류
+		
+		System.out.println(factory1 == factory2) // true
+	}
+}
+
+
+
+2.
+
+public class Employee {
+	
+	String name;
+	int sabun;
+	float salary;
+	
+       
+	Employee(String name, int sabun, float salary){
+		this.name = name;
+		this.sabun = sabun;
+		this.salary = salary;
+	}
+
+	String getDetails(){
+		return name + ":" + Integer.toString(sabun) + ":" + Float.toString(salary);
+	}
+}
+
+public class Manager extends Employee {
+
+	String department;
+	
+	Manager(String name, int sabun, float salary, String department) {	
+		super(name, sabun, salary)
+		this.department = department;
+	}
+	
+	String getDetails(){
+		return super.getDetails() +  ":" + department; 
+	}
+}
+
+
+
+
+
+
+3.
+
+
+public class Person {
+    String name;
+    int weight;
+    int height;
+    int registerNumber;
+
+    Person(String name, int weight, int height, int registerNumber) {
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        this.registerNumber = registerNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return registerNumber == ((Person)o).registerNumber;
+    }
+}
+
+public class PersonTest {
+	public static void main(String[] args) {
+        Person p1 = new Person("박찬진", 85, 183, 12345);
+        Person p2 = new Person("경규일", 85, 183, 12345);
+        Person p3 = new Person("박찬호", 100, 160, 12345);
+
+        System.out.println(p1.equals(p2));
+        System.out.println(p2.equals(p3));
+    }
+}
+
+4.
+public abstract class Car {
+    public abstract void start();
+    public abstract void drive();
+    public abstract void stop();
+    public abstract void turnoff();
+    public abstract void washCar();
+
+    public void run() {
+        start();
+        drive();
+        stop();
+        turnoff();
+        washCar();
+    }
+}
+
+
+public class Avante extends Car {
+    @Override
+    public void start() {
+        // Avante Start
+    }
+
+    @Override
+    public void drive() {
+        // Avante drive
+    }
+
+    @Override
+    public void stop() {
+        // Avante stop
+    }
+
+    @Override
+    public void turnoff() {
+        // Avante turnoff
+    }
+
+    @Override
+    public void washCar() {
+        //Avante washCar
+    }
+}
+
+public class Grandeur extends Car {
+    @Override
+    public void start() {
+        // Grandeur start
+    }
+
+    @Override
+    public void drive() {
+        // Grandeur drive
+    }
+
+    @Override
+    public void stop() {
+        // Grandeur stop
+    }
+
+    @Override
+    public void turnoff() {
+        // Grandeur turnoff
+    }
+
+    @Override
+    public void washCar() {
+        // Grandeur washCar
+    }
+}
+
+public class K5 extends Car {
+    @Override
+    public void start() {
+        // K5 start
+    }
+
+    @Override
+    public void drive() {
+        // K5 drive
+    }
+
+    @Override
+    public void stop() {
+        // K5 stop
+    }
+
+    @Override
+    public void turnoff() {
+        // K5 turnoff
+    }
+
+    @Override
+    public void washCar() {
+        // K5 washCar
+    }
+}
+
+public class Genesis implements Car {
+    @Override
+    public void start() {
+        // genesis start
+    }
+
+    @Override
+    public void drive() {
+        // genesis drive
+    }
+
+    @Override
+    public void stop() {
+        // genesis stop
+    }
+
+    @Override
+    public void turnoff() {
+        // genesis turnoff
+    }
+
+    @Override
+    public void washCar() {
+        // genesis washCar
+    }
+}
+
+public class Sonata extends Car {
+    @Override
+    public void start() {
+        // sonata start
+    }
+
+    @Override
+    public void drive() {
+        // sonata drive
+    }
+
+    @Override
+    public void stop() {
+        // sonata stop
+    }
+
+    @Override
+    public void turnoff() {
+        // sonata turnoff
+    }
+
+    @Override
+    public void washCar() {
+        // sonata washCar
+    }
+}
+
+
+
+
+5.
+1)
+Map<String, String> map = new TreeMap<String, String>();
+map.put("1", "이도호");
+map.put("2", "최훈존");
+map.put("3", "조성환");
+map.put("4", "김기렴");
+map.put("5", "김중일");
+
+//출력코드 작성
+
+Iterator<String> isKey = map.keySet().iterator();
+
+while(isKey.hasNext()) {
+    System.out.println(map.get(isKey.next()));
+}
+
+2)
+Map<String, String> map = new TreeMap<String, String>() {
+    @Override
+    public String get(Object key) {
+        return key.toString();
+    }
+
+    @Override
+    public String put(String key, String value) {
+        return super.put(value, key);
+    }
+};
+
+
+
+6.
+public static void main(String[] args) throws java.io.IOException {
+    int i;
+    java.io.InputStreamReader isr = new InputStreamReader(System.in);
+    System.out.println("종료하기 위해서는 '끝'을 입력하시오");
+    System.out.println("출력할 데이터를 입력하시오? ");
+    while((i = isr.read()) != '끝') {
+        System.out.print((char)i);
+    }
+}
+
+
+
+
+7. X(성공)
+
+
+8.
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+        ScrollDecorator sd = new ScrollDecorator(new TextView());
+        sd.viewing();
+        SpringDecorator spd = new SpringDecorator(new LineDecorator(new TextView()));
+        spd.viewing();
+        LineDecorator ld = new LineDecorator(new ScrollDecorator(new BorderDecorator(new TextView())));
+        ld.viewing();
+    }
+}
+
+public class SpringDecorator extends Decorator {
+    public SpringDecorator(BaseView v) {
+        super(v);
+    }
+
+    public void viewing() {
+        System.out.print("spring ");
+        v.viewing();
+    }
+}
+public class LineDecorator extends Decorator {
+    public LineDecorator(BaseView v) {
+        super(v);
+    }
+
+    public void viewing() {
+        System.out.print("Line ");
+        v.viewing();
+    }
+}
+
+public class BorderDecorator extends Decorator {
+    public BorderDecorator(BaseView v) {
+        super(v);
+    }
+
+    public void viewing() {
+        System.out.print("border ");
+        v.viewing();
+    }
+}
+
+public class ScrollDecorator extends Decorator {
+    public ScrollDecorator(BaseView v) {
+        super(v);
+    }
+
+    public void viewing() {
+        System.out.print("scroll ");
+        v.viewing();
+    }
+}
+public abstract class Decorator extends BaseView {
+    protected volatile BaseView v;
+    protected Decorator(BaseView v) {
+        this.v = v;
+    }
+    public void viewing() {
+        System.out.println(str);
+    }
+}
+
+public class TextView extends BaseView {
+    private String str = "Hello world";
+
+    public void viewing() {
+        System.out.println(str);
+    }
+}
+
+public abstract class BaseView {
+    protected String str;
+    public void viewing() {
+        System.out.println(str);
+    }
+}
+
+
+
+9.
+
+output --------
+
+알고리즘을 선택하세요
+Shell sort
+Quick sort
+Merge sort
+
+
+code ----------
+
+class ShellSort implements Sort{
+	@Override
+    public void sort(int[] arr){
+		System.out.println(“shell sort”);
+	}
+}
+
+class MergeSort implements Sort{
+	@Override
+    public void sort(int[] arr){
+		System.out.println(“merge sort”);
+	}
+}
+
+class QuickSort implements Sort{
+	@Override
+    public void sort(int[] arr){
+		System.out.println(“quick sort”);
+	}
+}
+
+
+
+//input 부분
+int input = System.in.read();
+Sort sortAlgorithm;
+if (input == 1)
+	sortAlgorithm = new ShellSort();
+else if(input == 2)
+ 	sortAlgorithm = new QuickSort();
+else if(input == 3)
+    sortAlgorithm = new MergeSort();
+
+
+// sort 호출 부분
+public void sort(int[] arr) {
+     sortAlgorithm.sort(arr);
+}
+
+//interface
+public interface Sort {
+	public void sort(int[] arr);
+}
+
+
+
+
+10.
+
+인터페이스를 통해 우리는 어떤 메서드들이 어떻게 동작하는지보다 무엇을 하는지에 집중해서 사용할 수 있다. 인터페이스는 그것을 확장한 객체들의 명세이며, 그 인터페이스들을 확장한 객체들은 그 인터페이스가 가진 메서드(기능)을 할 것을 알 수 있다. 이는 나아가 내부적으로 인터페이스의 구현과 인터페이스의 메서드들을 사용하는 것을 느슨하게 한다. 이를 통해 의존성을 낮추는 등 설계상 유리한 점이 많다.
+JDBC의 경우 많은 DB 종류에 관계없이 인터페이스를 통해 메서드들을 사용함으로서 DB를 교체할 때도 여전히 같은 코드로 동작할 것을 예상할 수 있다. 이는 객체지향 원칙 중 하나인 다형성으로, 인터페이스를 확장한 어느 DB가 와도 이들의 메서드들을 사용하는 쪽에서는 신경쓰지 않고 사용할 수 있다.
