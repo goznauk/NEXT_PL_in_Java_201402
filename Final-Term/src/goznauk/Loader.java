@@ -4,7 +4,10 @@ import java.io.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 
 /**
@@ -13,12 +16,10 @@ import java.util.PriorityQueue;
 public class Loader {
     String path = "./passenger_list.csv";
     public PriorityQueue<Passenger> inputQueue;
+    HashMap<Integer, Passenger> passengerMap;
 
-    public Loader() {
-        load();
-    }
 
-    public void load() {
+    public HashMap<Integer, Passenger> load() {
         inputQueue = new PriorityQueue<Passenger>(60, new Comparator<Passenger>() {
             @Override
             public int compare(Passenger o1, Passenger o2) {
@@ -27,6 +28,8 @@ public class Loader {
                 else return 0;
             }
         });
+
+        passengerMap = new HashMap<Integer, Passenger>();
 
         try {
             File csv = new File(path);
@@ -41,12 +44,15 @@ public class Loader {
                 if(token.length == 7) {
                     Passenger p = new Passenger(Integer.parseInt(token[0]), Integer.parseInt(token[2]), Integer.parseInt(token[3]), STATION.parse(token[4]), STATION.parse(token[5]));
                     inputQueue.add(p);
+                    passengerMap.put(p.getId(), p);
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return passengerMap;
     }
 
 }

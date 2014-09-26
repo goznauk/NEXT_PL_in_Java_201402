@@ -8,6 +8,9 @@ public class Timer {
     private TimerCallback timerCallbackEvent;
 
     public void tick() {
+        System.out.println();
+        System.out.println("--------------------------------------------------------------------------");
+        System.out.println();
         System.out.println("tick : " + time);
         timerCallbackEvent.onTick(time);
         time++;

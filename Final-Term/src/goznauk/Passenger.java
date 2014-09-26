@@ -7,7 +7,8 @@ public class Passenger {
     protected int id;
     private int arrived;
     private int ticketing;
-    private int waiting;
+    private int waitingTicket;
+    private int waitingTrain;
     private int moving;
     private STATION i;
     private STATION f;
@@ -32,12 +33,20 @@ public class Passenger {
         return ticketing;
     }
 
-    public int getWaiting() {
-        return waiting;
+    public int getWaitingTicket() {
+        return waitingTicket;
     }
 
-    public void setWaiting(int waiting) {
-        this.waiting = waiting;
+    public void setWaitingTicket(int waitingTicket) {
+        this.waitingTicket = waitingTicket;
+    }
+
+    public int getWaitingTrain() {
+        return waitingTrain;
+    }
+
+    public void setWaitingTrain(int waitingTrain) {
+        this.waitingTrain = waitingTrain;
     }
 
     public int getMoving() {
@@ -55,4 +64,9 @@ public class Passenger {
     public STATION getF() {
         return f;
     }
+
+    public String toString() {
+        return "[ID:" + id + "] arrived : " + arrived + " | ticketing : " + ticketing + " | waiting_Tk : " + waitingTicket + " | waiting_Tr : " + waitingTrain + " | moving : " + moving;
+    }
+
 }
