@@ -1,4 +1,4 @@
-package goznauk;
+package goznauk.time;
 
 /**
  * Created by goznauk on 2014. 9. 26..

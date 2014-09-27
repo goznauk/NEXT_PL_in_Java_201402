@@ -1,6 +1,6 @@
 package goznauk.station.policy;
 
-import goznauk.Passenger;
+import goznauk.data.Passenger;
 
 import java.util.Comparator;
 

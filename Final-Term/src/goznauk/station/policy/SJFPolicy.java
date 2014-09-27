@@ -1,6 +1,6 @@
 package goznauk.station.policy;
 
-import goznauk.Passenger;
+import goznauk.data.Passenger;
 
 /**
  * Created by goznauk on 2014. 9. 26..
