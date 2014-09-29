@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Timer timer = new Timer();
+        final Timer timer = new Timer();
         final TicketBox ticketBox = new TicketBox(new SJFPolicy());
         final Loader loader = new Loader();
         final HashMap<Integer, Passenger> passengerMap = loader.load();
@@ -32,8 +32,8 @@ public class Main {
             public void onUpdated(int id, int endTime) {
                 Passenger p = passengerMap.get(id);
                 p.setWaitingTicket(endTime - p.getTicketing() - p.getArrived());
-                if(endTime%3 == 0) p.setWaitingTrain(0);
-                else p.setWaitingTrain(3-(endTime%3));
+                if (endTime % 3 == 0) p.setWaitingTrain(0);
+                else p.setWaitingTrain(3 - (endTime % 3));
                 pathFinder.init();
                 System.out.println(" -> Passenger" + p.getId() + " is going to take a Train at " + (endTime + p.getWaitingTrain()) + "t");
                 p.setMoving(pathFinder.findPath(p.getI(), p.getF()));
@@ -58,7 +58,7 @@ public class Main {
         timer.start();
 
         // FIXME : test code
-        for(int i = 1; passengerMap.get(i) != null; i++) {
+        for (int i = 1; passengerMap.get(i) != null; i++) {
             //System.out.println(passengerMap.get(i).toString());
         }
         Saver.SaveCsvFromHashMap(passengerMap);

@@ -22,14 +22,26 @@ public class Timer {
     }
 
     public void start() {
-        for(int i = 0; i < 80; i++) {
-            try {
-                tick();
-                if(timerCallbackEvent.checkStop()) { return; }
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-                break;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0; i < 80; i++) {
+                    try {
+                        tick();
+                        if(timerCallbackEvent.checkStop()) { return; }
+                        Thread.sleep(1000);
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        break;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+                }
             }
-        }
+        });
+
+        t.start();
+
     }
 }
